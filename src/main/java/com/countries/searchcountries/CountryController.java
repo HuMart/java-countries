@@ -30,7 +30,18 @@ public class CountryController
                 .findCountries(c -> c.getName().toUpperCase().charAt(0) == Character.toUpperCase(letter));
         return new ResponseEntity<>(rtnCountry, HttpStatus.OK);
     }
+
     //    localhost:2019/names/size/{number}
+    @GetMapping(value = "names/size/{number}",
+                produces = {"application/json"})
+    public ResponseEntity<?> getCountrySize(@PathVariable int number)
+    {
+        ArrayList<Country> rtnCountrySize = SearchcountriesApplication.myCountryList
+                .findCountries(c -> c.getName().length() >= number);
+        rtnCountrySize.sort((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()));
+        return new ResponseEntity<>(rtnCountrySize, HttpStatus.OK);
+    }
+
     //    localhost:2019/population/size/{people}
     //    localhost:2019/population/min
     //    localhost:2019/population/max
