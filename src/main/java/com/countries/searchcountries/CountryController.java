@@ -120,6 +120,24 @@ public class CountryController
         return new ResponseEntity<>(SearchcountriesApplication.myCountryList.countryList.get(0), HttpStatus.OK);
     }
 
+    // localhost:2019/age/median
+    @GetMapping(value = "/age/median",
+                produces = {"application/json"})
+    public ResponseEntity<?> getAgeMedianCountry()
+    {
+        ArrayList<Country> tempCountry = SearchcountriesApplication.myCountryList.countryList;
+        tempCountry.sort((c1, c2) -> (int)(c1.getMedianAge() - c2.getMedianAge()));
+        if(tempCountry.size()% 2 == 1)
+        {
+            return new ResponseEntity<>(tempCountry.get((tempCountry.size()/2)+1), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(tempCountry.get(tempCountry.size()/2), HttpStatus.OK);
+        }
+    }
+
+
 
 
 }
