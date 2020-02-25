@@ -43,6 +43,14 @@ public class CountryController
     }
 
     //    localhost:2019/population/size/{people}
+    @GetMapping(value = "/population/size/{people}",
+                produces = {"application/json"})
+    public ResponseEntity<?> getCountriesByPopulation(@PathVariable long people)
+    {
+        ArrayList<Country> rtnCountriesByPopulation = SearchcountriesApplication.myCountryList
+                .findCountries(c -> c.getPopulation() >= people);
+        return new ResponseEntity<>(rtnCountriesByPopulation, HttpStatus.OK);
+    }
     //    localhost:2019/population/min
     //    localhost:2019/population/max
 }
