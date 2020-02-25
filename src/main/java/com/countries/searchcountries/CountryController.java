@@ -101,4 +101,25 @@ public class CountryController
         return new ResponseEntity<>(rtnCountries, HttpStatus.OK);
     }
 
+    //    localhost:2019/age/min
+
+    @GetMapping(value = "/age/min",
+                produces = {"application/json"})
+    public ResponseEntity<?> getLowestMedianAge()
+    {
+        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int) (c1.getMedianAge() - c2.getMedianAge()));
+        return new ResponseEntity<>(SearchcountriesApplication.myCountryList.countryList.get(0), HttpStatus.OK);
+    }
+
+    //    localhost:2019/age/max
+    @GetMapping(value = "/age/max",
+                produces = {"application/json"})
+    public ResponseEntity<?> getMostMedianAge()
+    {
+        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int) (c2.getMedianAge() - c1.getMedianAge()));
+        return new ResponseEntity<>(SearchcountriesApplication.myCountryList.countryList.get(0), HttpStatus.OK);
+    }
+
+
+
 }
