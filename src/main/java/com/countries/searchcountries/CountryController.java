@@ -52,5 +52,21 @@ public class CountryController
         return new ResponseEntity<>(rtnCountriesByPopulation, HttpStatus.OK);
     }
     //    localhost:2019/population/min
+
+    @GetMapping(value = "/population/min",
+                produces = {"application/json"})
+    public ResponseEntity<?> getLowestPopulation()
+    {
+        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int)(c1.getPopulation() - c2.getPopulation()));
+        return new ResponseEntity<>(SearchcountriesApplication.myCountryList.countryList.get(0), HttpStatus.OK);
+    }
+
     //    localhost:2019/population/max
+    @GetMapping(value = "/population/max",
+                produces = {"application/json"})
+    public ResponseEntity<?> getMostPopulation()
+    {
+        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int)(c2.getPopulation() - c1.getPopulation()));
+        return new ResponseEntity<>(SearchcountriesApplication.myCountryList.countryList.get(0), HttpStatus.OK);
+    }
 }
