@@ -90,4 +90,15 @@ public class CountryController
         }
     }
 
+//    localhost:2019/age/age/{age}
+    @GetMapping(value = "/age/age/{age}",
+                produces = {"application/json"})
+    public ResponseEntity<?> getAgeByInput(@PathVariable int age)
+    {
+        ArrayList<Country> rtnCountries = SearchcountriesApplication.myCountryList
+                .findCountries(c -> c.getMedianAge() >= age);
+        rtnCountries.sort((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()));
+        return new ResponseEntity<>(rtnCountries, HttpStatus.OK);
+    }
+
 }
