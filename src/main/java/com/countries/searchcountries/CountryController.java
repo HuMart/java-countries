@@ -24,20 +24,22 @@ public class CountryController
     //    localhost:2019/names/start/{letter}
     @GetMapping(value = "/names/start/{letter}",
                 produces = {"application/json"})
-    public ResponseEntity<?> getCountryByFirstLetter(@PathVariable char letter)
+    public ResponseEntity<?> getCountryByFirstLetter(
+            @PathVariable
+                    char letter)
     {
-        ArrayList<Country> rtnCountry = SearchcountriesApplication.myCountryList
-                .findCountries(c -> c.getName().toUpperCase().charAt(0) == Character.toUpperCase(letter));
+        ArrayList<Country> rtnCountry = SearchcountriesApplication.myCountryList.findCountries(c -> c.getName().toUpperCase().charAt(0) == Character.toUpperCase(letter));
         return new ResponseEntity<>(rtnCountry, HttpStatus.OK);
     }
 
     //    localhost:2019/names/size/{number}
     @GetMapping(value = "names/size/{number}",
                 produces = {"application/json"})
-    public ResponseEntity<?> getCountrySize(@PathVariable int number)
+    public ResponseEntity<?> getCountrySize(
+            @PathVariable
+                    int number)
     {
-        ArrayList<Country> rtnCountrySize = SearchcountriesApplication.myCountryList
-                .findCountries(c -> c.getName().length() >= number);
+        ArrayList<Country> rtnCountrySize = SearchcountriesApplication.myCountryList.findCountries(c -> c.getName().length() >= number);
         rtnCountrySize.sort((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()));
         return new ResponseEntity<>(rtnCountrySize, HttpStatus.OK);
     }
@@ -45,10 +47,11 @@ public class CountryController
     //    localhost:2019/population/size/{people}
     @GetMapping(value = "/population/size/{people}",
                 produces = {"application/json"})
-    public ResponseEntity<?> getCountriesByPopulation(@PathVariable long people)
+    public ResponseEntity<?> getCountriesByPopulation(
+            @PathVariable
+                    long people)
     {
-        ArrayList<Country> rtnCountriesByPopulation = SearchcountriesApplication.myCountryList
-                .findCountries(c -> c.getPopulation() >= people);
+        ArrayList<Country> rtnCountriesByPopulation = SearchcountriesApplication.myCountryList.findCountries(c -> c.getPopulation() >= people);
         return new ResponseEntity<>(rtnCountriesByPopulation, HttpStatus.OK);
     }
     //    localhost:2019/population/min
@@ -57,7 +60,7 @@ public class CountryController
                 produces = {"application/json"})
     public ResponseEntity<?> getLowestPopulation()
     {
-        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int)(c1.getPopulation() - c2.getPopulation()));
+        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int) (c1.getPopulation() - c2.getPopulation()));
         return new ResponseEntity<>(SearchcountriesApplication.myCountryList.countryList.get(0), HttpStatus.OK);
     }
 
@@ -66,7 +69,25 @@ public class CountryController
                 produces = {"application/json"})
     public ResponseEntity<?> getMostPopulation()
     {
-        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int)(c2.getPopulation() - c1.getPopulation()));
+        SearchcountriesApplication.myCountryList.countryList.sort((c1, c2) -> (int) (c2.getPopulation() - c1.getPopulation()));
         return new ResponseEntity<>(SearchcountriesApplication.myCountryList.countryList.get(0), HttpStatus.OK);
     }
+
+    // localhost:2019/population/median
+    @GetMapping(value = "/population/median",
+                produces = {"application/json"})
+    public ResponseEntity<?> getPopulationMedian()
+    {
+        ArrayList<Country> tempCountry = SearchcountriesApplication.myCountryList.countryList;
+        tempCountry.sort((c1, c2) -> (int)(c1.getPopulation() - c2.getPopulation()));
+        if(tempCountry.size()% 2 == 1)
+        {
+            return new ResponseEntity<>(tempCountry.get((tempCountry.size()/2)+1), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>(tempCountry.get(tempCountry.size()/2), HttpStatus.OK);
+        }
+    }
+
 }
